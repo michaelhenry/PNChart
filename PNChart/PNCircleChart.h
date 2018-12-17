@@ -6,9 +6,9 @@
 //  Copyright (c) 2013年 kevinzhow. All rights reserved.
 //
 
+@import UICountingLabel;
 #import <UIKit/UIKit.h>
 #import "PNColor.h"
-#import <UICountingLabel/UICountingLabel.h>
 
 typedef NS_ENUM (NSUInteger, PNChartFormatType) {
     PNChartFormatTypePercent,
