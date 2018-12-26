@@ -192,10 +192,11 @@
     if (_showLabel) {
         for (int index = 0; index < xLabels.count; index++) {
             labelText = xLabels[index];
-            NSInteger x = index * _xLabelWidth + _chartMarginLeft/2 + _xLabelWidth / 2.0;
+            NSInteger x = (index * _xLabelWidth + _chartMarginLeft + _xLabelWidth / 2.0);
             NSInteger y = _chartMarginBottom + _chartCavanHeight;
             PNChartLabel *label = [[PNChartLabel alloc] initWithFrame:CGRectMake(x, y, (NSInteger) _xLabelWidth, (NSInteger) _chartMarginBottom)];
             [label setTextAlignment:NSTextAlignmentCenter];
+            [label setCenter:CGPointMake(x, y + label.bounds.size.height/2)];
             label.text = labelText;
             [self setCustomStyleForXLabel:label];
             [self addSubview:label];
@@ -1079,6 +1080,32 @@
         _pathAnimation.toValue = @1.0f;
     }
     return _pathAnimation;
+}
+
+- (void) layoutSubviews {
+  [super layoutSubviews];
+  
+  if (_chartData){
+    _chartCavanWidth = self.frame.size.width - _chartMarginLeft * 2;
+    _chartCavanHeight = self.frame.size.height - _chartMarginTop * 2;
+    
+    if (_showLabel) {
+      _xLabelWidth = _chartCavanWidth / [_xLabels count];
+    }
+    else{
+      _xLabelWidth = (self.frame.size.width) / [_xLabels count];
+    }
+    
+    for (UIView *v in [self subviews]){
+      if ([v isKindOfClass: PNChartLabel.class]){
+        [v removeFromSuperview];
+      }
+    }
+    
+    [self setYLabels];
+    [self setXLabels:_xLabels];
+    [self strokeChart];
+  }
 }
 
 @end
